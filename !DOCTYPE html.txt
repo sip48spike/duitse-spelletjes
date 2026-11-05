@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Duitse Quiz Game</title>
+
+<style>
+body{
+font-family:Arial;
+background:#e8f5e9;
+text-align:center;
+margin:0;
+}
+
+h1{
+background:#4CAF50;
+color:white;
+padding:20px;
+margin:0;
+}
+
+.game{
+background:white;
+width:90%;
+max-width:600px;
+margin:30px auto;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 10px gray;
+}
+
+button{
+padding:12px;
+margin:5px;
+border:none;
+border-radius:10px;
+background:#4CAF50;
+color:white;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#2e7d32;
+}
+
+#score,#timer{
+font-size:22px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🇩🇪 Duitse Quiz Game</h1>
+
+<div class="game">
+
+<p id="timer">Tijd: 60</p>
+
+<p id="score">Score: 0</p>
+
+<h2 id="question"></h2>
+
+<div id="answers"></div>
+
+<p id="result"></p>
+
+</div>
+
+<script>
+
+let score=0;
+let tijd=60;
+
+const vragen=[
+
+{
+vraag:"Wat betekent der Montag?",
+antwoorden:["maandag","woensdag","vrijdag","zondag"],
+juist:"maandag"
+},
+
+{
+vraag:"Wat betekent die Apotheke?",
+antwoorden:["kerk","apotheek","hotel","bank"],
+juist:"apotheek"
+},
+
+{
+vraag:"Wat betekent der Bahnhof?",
+antwoorden:["restaurant","station","metro","trein"],
+juist:"station"
+},
+
+{
+vraag:"Wat betekent das Hotel?",
+antwoorden:["hotel","kerk","bank","trein"],
+juist:"hotel"
+},
+
+{
+vraag:"Wat betekent das Rathaus?",
+antwoorden:["bibliotheek","marktplaats","stadhuis","station"],
+juist:"stadhuis"
+},
+
+{
+vraag:"Wat betekent die Kirche?",
+antwoorden:["kerk","apotheek","bank","metro"],
+juist:"kerk"
+}
+
+];
+
+function nieuweVraag(){
+
+let q=vragen[Math.floor(Math.random()*vragen.length)];
+
+document.getElementById("question").innerText=q.vraag;
+
+let knoppen="";
+
+q.antwoorden.forEach(a=>{
+knoppen+=`
+<button onclick="controleer('${a}','${q.juist}')">
+${a}
+</button>
+`;
+});
+
+document.getElementById("answers").innerHTML=knoppen;
+}
+
+function controleer(antwoord,juist){
+
+if(antwoord===juist){
+
+score++;
+
+document.getElementById("score").innerText=
+"Score: "+score;
+
+document.getElementById("result").innerHTML=
+"✅ Juist!";
+
+}
+else{
+
+document.getElementById("result").innerHTML=
+"❌ Fout!";
+
+}
+
+nieuweVraag();
+}
+
+nieuweVraag();
+
+let interval=setInterval(function(){
+
+tijd--;
+
+document.getElementById("timer").innerText=
+"Tijd: "+tijd;
+
+if(tijd<=0){
+
+clearInterval(interval);
+
+document.body.innerHTML=
+`
+<h1>🏆 Einde</h1>
+<h2>Jouw score: ${score}</h2>
+`;
+
+}
+
+},1000);
+
+</script>
+
+</body>
+</html>
